@@ -55,7 +55,7 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Releases</name>
-            <url>http://YOUR_NEXUS_IP:8081/repository/maven-releases/</url>
+            <url>${nexus.ip}:8081</url>
         </repository>
 
         <snapshotRepository>

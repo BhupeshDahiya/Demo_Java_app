@@ -4,6 +4,3 @@ target/
 *.iml
 *.log
 .env
-terraform.tfstate
-terraform.tfstate.backup
-.terraform/
