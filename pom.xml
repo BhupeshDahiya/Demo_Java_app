@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <nexus.ip>localhost</nexus.ip>
     </properties>
 
     <dependencies>
@@ -55,13 +56,13 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Releases</name>
-            <url>${nexus.ip}:8081</url>
+            <url>${nexus.ip}:8081/repository/maven-releases/</url>
         </repository>
 
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshots</name>
-            <url>http://YOUR_NEXUS_IP:8081/repository/maven-snapshots/</url>
+            <url>${nexus.ip}:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
 
     </distributionManagement>
