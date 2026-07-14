@@ -22,10 +22,6 @@ spec:
         volumeMounts:
           - name: app-data
             mountPath: /app/data
-        volumes:
-        - name: app-data
-          persistentVolumeClaim:
-            claimName: app-data
         readinessProbe:
           httpGet:
             path: /actuator/health
@@ -45,3 +41,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "1000m"
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: app-data
