@@ -5,7 +5,7 @@ metadata:
   labels:
     app: demo-java-app
 spec:
-  replicas: 2
+  # replicas: 2 # not needed as im using HPA
   selector:
     matchLabels:
       app: demo-java-app
@@ -19,6 +19,13 @@ spec:
         image: bhupesh40/java-demo-app:v1
         ports:
         - containerPort: 8080
+        volumeMounts:
+          - name: app-data
+            mountPath: /app/data
+        volumes:
+        - name: app-data
+          persistentVolumeClaim:
+            claimName: app-data
         readinessProbe:
           httpGet:
             path: /actuator/health
