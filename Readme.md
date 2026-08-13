@@ -32,3 +32,9 @@ What we do instead is Parameterize those URLs using a custom Maven property. by 
 
 How this helps : When you run your compilation step inside your Jenkinsfile later, you can dynamically inject the current active Nexus private IP straight from an environment variable using the standard Maven define flag:
 `mvn clean deploy -Dnexus.ip=${NEXUS_PRIVATE_IP}`
+
+## TO push docker img to ECR
+
+- Authenticate docker into ecr using the ECR URI `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account>.dkr.ecr.<region>.amazonaws.com/demo-java-app:v1`
+- Build and tag image for ECR `docker build -f Dockerfile -t <account>.dkr.ecr.<region>.amazonaws.com/demo-java-app:v1 .`
+- Push to ECR `docker push <account>.dkr.ecr.<region>.amazonaws.com/demo-java-app:v1`
