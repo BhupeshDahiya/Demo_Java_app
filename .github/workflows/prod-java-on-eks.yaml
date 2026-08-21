@@ -2,6 +2,13 @@ name: prod-java-on-eks
 on: 
   push: 
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running manually'
+        required: false
+        default: 'Manual health check'
+
 permissions:
   id-token: write
   contents: write
