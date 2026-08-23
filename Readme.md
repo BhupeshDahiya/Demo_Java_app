@@ -22,7 +22,7 @@
 
 - Docker — has a Dockerfile and .dockerignore
 
-- Kubernetes — has a full k8s/ folder with deployment, service, ingress, HPA, and PVC manifests
+- Kubernetes — has a full k8s folder with deployment, service, ingress, HPA, and PVC manifests
 
 ## APP RELATED FIXES
 
