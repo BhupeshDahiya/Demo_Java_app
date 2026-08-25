@@ -26,7 +26,7 @@ jobs:
           cache: 'maven'
           distribution: temurin
           java-version: '21'
-      - run: mvn clean package -DskipTests
+      - run: mvn clean verify
 
       - name: config aws creds
         uses: aws-actions/configure-aws-credentials@v4
