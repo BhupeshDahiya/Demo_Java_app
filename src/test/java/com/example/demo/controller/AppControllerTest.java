@@ -86,7 +86,7 @@ class AppControllerTest {
 
         ResponseEntity<Map> response =
                 restTemplate.getForEntity(
-                        "http://localhost:" + port + "/validate?input=%20hello%20",
+                        "http://localhost:" + port + "/validate?input=+hello+",
                         Map.class
                 );
 
