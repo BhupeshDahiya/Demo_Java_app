@@ -53,7 +53,8 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         with:
-          image-ref: '$REGISTRY/$REPOSITORY:$IMAGE_TAG'
+          image-ref: '${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}'
+          # format: 'sarif'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -75,7 +76,7 @@ jobs:
 
       - name: Update image tag in manifest
         env:
-          IMAGE: ${{ steps.login-ecr.outputs.registry }}/java-demo-app:${{ github.sha }}
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
         run: |
           sed -i "s|image:.*java-demo-app.*|image: $IMAGE|" infra/gitops/manifests/java_demo_app/deployment.yaml
 
