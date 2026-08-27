@@ -3,7 +3,7 @@ WORKDIR /artifact
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre-alpine-3.24
 WORKDIR /app
 COPY --from=builder /artifact/target/devops-demo-1.0.0.jar app.jar
 EXPOSE 8080
