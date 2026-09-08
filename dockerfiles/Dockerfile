@@ -6,6 +6,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine-3.24
 RUN apk update && apk upgrade
 WORKDIR /app
-COPY --from=builder /artifact/target/devops-demo-1.0.0.jar app.jar
+COPY --from=builder /artifact/target/java-demo-app-1.0.0.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
