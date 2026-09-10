@@ -5,7 +5,7 @@ metadata:
   labels:
     app: demo-java-app
 spec:
-  # replicas: 2 # not needed as im using HPA
+  replicas: 2
   selector:
     matchLabels:
       app: demo-java-app
@@ -14,14 +14,30 @@ spec:
       labels:
         app: demo-java-app
     spec:
+      initContainers:
+      - name: flyway-migrate
+        image: flyway/flyway:10-alpine
+        args:
+        - -url=jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)
+        - -user=$(DB_USER)
+        - -password=$(DB_PASSWORD)
+        - -locations=filesystem:/flyway/sql
+        - migrate
+        envFrom:
+        - secretRef:
+            name: demo-db-secret
+        volumeMounts:
+        - name: migrations
+          mountPath: /flyway/sql
+
       containers:
       - name: demo-java-app
-        image: bhupesh40/java-demo-app:v1
+        image: <YOUR_REGISTRY>/demo-java-app:<IMAGE_TAG>
         ports:
         - containerPort: 8080
-        volumeMounts:
-          - name: app-data
-            mountPath: /app/data
+        envFrom:
+        - secretRef:
+            name: demo-db-secret
         readinessProbe:
           httpGet:
             path: /actuator/health
@@ -34,14 +50,8 @@ spec:
             port: 8080
           initialDelaySeconds: 20
           periodSeconds: 10
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
-          limits:
-            memory: "512Mi"
-            cpu: "1000m"
+
       volumes:
-      - name: app-data
-        persistentVolumeClaim:
-          claimName: app-data
+      - name: migrations
+        configMap:
+          name: flyway-migrations

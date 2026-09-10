@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Demo App</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    input { margin: 4px; padding: 6px; width: 200px; }
+    button { margin: 4px; padding: 6px 12px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    .del { color: red; cursor: pointer; border: none; background: none; }
+    .edit { cursor: pointer; border: none; background: none; }
+  </style>
+</head>
+<body>
+  <h2>Person Registry</h2>
+  <div>
+    <input id="name"  placeholder="Full Name"/>
+    <input id="dob"   type="date" placeholder="Date of Birth"/>
+    <input id="email" placeholder="Email"/>
+    <button onclick="savePerson()">Save</button>
+    <button onclick="resetForm()">Clear</button>
+  </div>
+
+  <table>
+    <thead><tr><th>Name</th><th>DOB</th><th>Email</th><th></th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <script>
+    let editingId = null;
+
+    async function load() {
+      const res = await fetch('/persons');
+      const data = await res.json();
+      const tbody = document.getElementById('tbody');
+      tbody.innerHTML = data.map(p => `
+        <tr>
+          <td>${p.name}</td>
+          <td>${p.dob}</td>
+          <td>${p.email}</td>
+          <td>
+            <button class="edit" onclick="startEdit(${p.id},'${p.name}','${p.dob}','${p.email}')">✏️</button>
+            <button class="del"  onclick="deletePerson(${p.id})">🗑️</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    async function savePerson() {
+      const body = {
+        name:  document.getElementById('name').value,
+        dob:   document.getElementById('dob').value,
+        email: document.getElementById('email').value
+      };
+      const url    = editingId ? `/persons/${editingId}` : '/persons';
+      const method = editingId ? 'PUT' : 'POST';
+      await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      resetForm();
+      load();
+    }
+
+    async function deletePerson(id) {
+      await fetch(`/persons/${id}`, { method: 'DELETE' });
+      load();
+    }
+
+    function startEdit(id, name, dob, email) {
+      editingId = id;
+      document.getElementById('name').value  = name;
+      document.getElementById('dob').value   = dob;
+      document.getElementById('email').value = email;
+    }
+
+    function resetForm() {
+      editingId = null;
+      ['name','dob','email'].forEach(f => document.getElementById(f).value = '');
+    }
+
+    load();
+  </script>
+</body>
+</html>
