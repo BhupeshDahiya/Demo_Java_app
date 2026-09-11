@@ -1,6 +1,6 @@
 # Java Demo App
 
-Spring Boot REST API built as a DevOps practice project. Features person CRUD with Postgres, Flyway migrations, Prometheus metrics, and structured JSON logging.
+A Spring Boot REST API built as a DevOps practice project. Features person CRUD with Postgres, Flyway migrations, Prometheus metrics, and structured JSON logging.
 
 ---
 
