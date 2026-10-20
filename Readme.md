@@ -132,6 +132,7 @@ mvn clean deploy -Dnexus.ip=<NEXUS_PRIVATE_IP>
 ## Pipeline Flowchart
 
 ```mermaid
+%%{ init: { 'flowchart': { 'minNodeWidth': 180 } } }%%
 graph TD
     A[Git Push] --> B[Checkout Code]
     B --> C[Setup Java 21]
@@ -139,7 +140,7 @@ graph TD
     D --> E[Docker Build]
     E --> F[Trivy Image Scan]
     F --> G[Push to ECR]
-    G --> H[Update GitOps Repo]
+    G --> H[Update deployment image in GitOps Repo]
     H --> I[ArgoCD Sync]
     I --> J[EKS Deployment]
 ```
